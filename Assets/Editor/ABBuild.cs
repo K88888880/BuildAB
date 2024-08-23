@@ -5,21 +5,29 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class ABBuild
+public class ABBuild:Editor
 {
     private static string m_AppName = PlayerSettings.productName;
     public static string m_AndroidPath = Application.dataPath + "/../BuildTarget/Android/";
     public static string m_IOSPath = Application.dataPath + "/../BuildTarget/IOS/";
     public static string m_WindowsPath = Application.dataPath + "/../BuildTarget/Windows/";
     
+
+    public static void Bu()
+    {
+
+        Build();
+        //File.WriteAllText(Application.dataPath + "/Resources/1.txt", "123");
+    }
+
     [MenuItem("Build/标准包")]
-    public static void Build()
+   public  static void Build()
     {
         //打ab包
      //   BundleEditor.NormalBuild();
         //写入版本信息
         SaveVersion(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
-
+         
         //生成可执行程序
         string abPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString() + "/";
         Copy(abPath, Application.streamingAssetsPath);
@@ -41,10 +49,11 @@ public class ABBuild
         {
             savePath = m_WindowsPath + m_AppName + "_" + EditorUserBuildSettings.activeBuildTarget + string.Format("_{0:yyyy_MM_dd_HH_mm}/{1}.exe", DateTime.Now, m_AppName);
         }
-
+                                    //打包的场景             路径              构建目标
         BuildPipeline.BuildPlayer(FindEnableEditorrScenes(), savePath, EditorUserBuildSettings.activeBuildTarget, BuildOptions.None);
         DeleteDir(Application.streamingAssetsPath);
         Debug.Log(savePath);
+        Debug.Log(0);
         AssetDatabase.Refresh();
     }
 
